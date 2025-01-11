@@ -44,7 +44,7 @@ struct BasicView: View {
 struct SmartClockView: View {
     @State private var currentTime: String = getCurrentTime()
     @State private var showContent: Bool = false
-    private var quote = Greeting().greet()
+    @State private var quote = ""
 
     var body: some View {
         ZStack {
@@ -59,6 +59,7 @@ struct SmartClockView: View {
                 // Futuristic button
                 Button(action: {
                     showContent.toggle()
+                    if(showContent == true) {quote = Greeting().greet()}
                 }) {
                     Text(showContent ? "Hide" : "Show Content")
                         .font(.system(size: 16))
