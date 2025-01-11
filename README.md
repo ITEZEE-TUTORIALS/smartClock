@@ -192,7 +192,7 @@ There are two ways to build multiplatform apps [KMP Documentation](https://www.j
 2. [Shared logic with shared UI](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-create-first-app.html)
 
 
-### Step 1: Set Up the Environment
+### Set Up the Environment
 1. Install Android Studio or IntelliJ IDEA.
 2. - Add Kotlin Multiplatform to your project setup. 
 3. Use the jetbrains [Kotlin multiplatform wizard ](https://kmp.jetbrains.com) to create a new project
@@ -517,7 +517,7 @@ struct SmartClockView: View {
 integrate more features like alarms, weather updates, and user settings to make the app more useful.
 integrate AI to provide personalized wake-up suggestions based on user habits and preferences.
 
-### Step 3: What we learned
+### What we learned
 - Understand the basics of multiplatform development.
 - Learn how to set up a Kotlin Multiplatform project.
 - Explore how to share code between platforms.
@@ -530,7 +530,7 @@ integrate AI to provide personalized wake-up suggestions based on user habits an
 - Understand how to manage project dependencies and configurations.
 - Learn how to use version control effectively in a multiplatform project.
 
-### Step 4: Testing and Deployment
+### Testing and Deployment
 - Test on Android and iOS simulators or devices.
 - Use tools like GitHub Actions to automate testing and deployment.
 
