@@ -194,37 +194,343 @@ There are two ways to build multiplatform apps [KMP Documentation](https://www.j
 
 ### Step 1: Set Up the Environment
 1. Install Android Studio or IntelliJ IDEA.
-2. - Add Kotlin Multiplatform to your project setup.
-- Or Use the jetbrains [Kotlin multiplatform wizard ](https://kmp.jetbrains.com)
-
-### Step 2: Create the User Interface (UI)
-Use Jetpack Compose to design the app’s interface:
+2. - Add Kotlin Multiplatform to your project setup. 
+3. Use the jetbrains [Kotlin multiplatform wizard ](https://kmp.jetbrains.com) to create a new project
+4. Choose the platforms you want to target (e.g., Android, iOS, Web).
+5. Do not choose the "Compose Multiplatform" option for now, we will be using jetpack compose for android and ios
+6. Download the project and open it in Android Studio or IntelliJ IDEA.
+7. Make sure to disable K2 mode [Steps](https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-setup.html#check-your-environment)
+8. Install the kotlin multiplatform Plugin
+9. Install Xcode for iOS development.
+10. Navigate to the `shared` module in your project.
+11. Open the `build.gradle.kts` file and add the following dependencies:
+```kotlin 
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+````
+12. Sync your project to download the dependencies.
+13. switch to project Files view and navigate to the `shared/src/commonMain/kotlin/` directory.
+13. Create a 'MockAPIClass' Kotlin file in the `shared/src/commonMain/projectdirectory/` module for your shared code.
+14. Add the following code to the 'MockAPIClass' file:
 ```kotlin
+
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+
+class MockAPIClass {
+
+  val quotes = listOf(
+    Json.parseToJsonElement("""{"quote": "The journey of a thousand miles begins with a single step.", "author": "Lao Tzu"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Believe you can and you're halfway there.", "author": "Theodore Roosevelt"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The only way to do great work is to love what you do.", "author": "Steve Jobs"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The mind is everything. What you think you become.", "author": "Buddha"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The best way to predict the future is to create it.", "author": "Peter Drucker and Abraham Lincoln"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Success is not final, failure is not fatal: it is the courage to continue that counts.", "author": "Winston Churchill"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The only person you are destined to become is the person you decide to be.", "author": "Ralph Waldo Emerson"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Life is what happens when you're busy making other plans.", "author": "John Lennon"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The difference between ordinary and extraordinary is that little extra.", "author": "Jimmy Johnson"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.", "author": "Helen Keller"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Keep your face always toward the sunshine - and shadows will fall behind you.", "author": "Walt Whitman"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Happiness is not something ready made. It comes from your own actions.", "author": "Dalai Lama"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The future belongs to those who believe in the beauty of their dreams.", "author": "Eleanor Roosevelt"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "It is during our darkest moments that we must focus to see the light.", "author": "Aristotle"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Do not go where the path may lead, go instead where there is no path and leave a trail.", "author": "Ralph Waldo Emerson"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The greatest glory in living lies not in never falling, but in rising every time we fall.", "author": "Nelson Mandela"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Your time is limited, so don't waste it living someone else's life.", "author": "Steve Jobs"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Many of life's failures are people who did not realize how close they were to success when they gave up.", "author": "Thomas A. Edison"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "If life were predictable it would cease to be life, and be without flavor.", "author": "Eleanor Roosevelt"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The purpose of our lives is to be happy.", "author": "Dalai Lama"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Life is really simple, but we insist on making it complicated.", "author": "Confucius"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "In three words I can sum up everything I've learned about life: it goes on.", "author": "Robert Frost"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Love the life you live. Live the life you love.", "author": "Bob Marley"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Life is either a daring adventure or nothing at all.", "author": "Helen Keller"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.", "author": "Dr. Seuss"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Life is a flower of which love is the honey.", "author": "Victor Hugo"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Only a life lived for others is a life worthwhile.", "author": "Albert Einstein"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "The greatest wealth is health.", "author": "Virgil"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Go confidently in the direction of your dreams! Live the life you've imagined.", "author": "Henry David Thoreau"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "When you reach the end of your rope, tie a knot in it and hang on.", "author": "Franklin D. Roosevelt"}""") as JsonObject,
+    Json.parseToJsonElement("""{"quote": "Always remember that you are absolutely unique. Just like everyone else.", "author": "Margaret Mead"}""") as JsonObject
+  )
+
+  fun getDailyQuote(): String {
+    return quotes.random().get("quote").toString()
+  }
+}
+```
+15. Navigate to the `composeApp/src/kotlin/projectDirectory/` module for Android-specific code.
+16. Create a file named App2.kt and add the following code:
+```kotlin
+package com.taaphise.smartclockdemo
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import java.text.SimpleDateFormat
+import java.util.*
+
 @Composable
-fun AlarmScreen() {
-    Column {
-        Text("Set Alarm")
-        Button(onClick = { /* Add alarm logic */ }) {
-            Text("Add Alarm")
+fun SmartClockUI() {
+    var showContent by remember { mutableStateOf(false) }
+
+    // Date format for the clock
+    val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    val currentTime = remember { mutableStateOf(dateFormat.format(Date())) }
+
+    LaunchedEffect(true) {
+        // Update the time every second
+        while (true) {
+            kotlinx.coroutines.delay(1000)
+            currentTime.value = dateFormat.format(Date())
+        }
+    }
+
+    // Use Material3 Theme
+    MaterialTheme {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            color = Color.Black
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                // Digital clock display with futuristic style
+                Text(
+                    text = currentTime.value,
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 64.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Futuristic button with Material3 style
+                Button(
+                    onClick = { showContent = !showContent },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(Color(0xFF1D1D1D))
+                ) {
+                    Text(
+                        text = if (showContent) "Hide" else "Show Content",
+                        color = Color.White,
+                        style = TextStyle(fontSize = 16.sp)
+                    )
+                }
+
+                AnimatedVisibility(visible = showContent) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        // Image for the futuristic look (adjust as needed)
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                            contentDescription = null
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Greeting or additional content
+                        Text(
+                            text = Greeting().greet(),
+                            style = TextStyle(
+                                color = Color.White,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Medium
+                            ),
+                            modifier = Modifier.padding(16.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewSmartClockUI() {
+    SmartClockUI()
+}
+```
+17. open the `MainActivity.kt` file in the `composeApp/src/kotlin/projectDirectory/` and modify the code to include the following:
+```kotlin
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            //App()
+            SmartClockUI()
         }
     }
 }
 ```
+18. Navigate to the `iosApp/iosApp/' and open the ContentView.swift file and add the following code:
+```swift
+import SwiftUI
+import Shared
 
-### Example: Alarm Logic for Each Platform
-```kotlin
-expect fun scheduleAlarm(time: Long)
+struct ContentView: View {
 
-actual fun scheduleAlarm(time: Long) {
-    // Platform-specific alarm setup
+    var body: some View {
+            //BasicView()
+            SmartClockView()
+        }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+struct BasicView: View {
+    @State private var showContent: Bool = false
+
+    var body: some View {
+        VStack {
+            Button("Click me!") {
+                withAnimation {
+                    showContent.toggle()
+                }
+            }
+
+            if showContent {
+                VStack(spacing: 16) {
+                    Image(systemName: "swift")
+                        .font(.system(size: 200))
+                        .foregroundColor(.accentColor)
+                    Text("SwiftUI: \(Greeting().greet())")
+                }
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .padding()
+    }
+}
+
+struct SmartClockView: View {
+    @State private var currentTime: String = getCurrentTime()
+    @State private var showContent: Bool = false
+    private var quote = Greeting().greet()
+
+    var body: some View {
+        ZStack {
+            Color.black.ignoresSafeArea()
+
+            VStack(spacing: 16) {
+                // Digital clock display
+                Text(currentTime)
+                    .font(.system(size: 64, weight: .bold, design: .monospaced))
+                    .foregroundColor(.white)
+
+                // Futuristic button
+                Button(action: {
+                    showContent.toggle()
+                }) {
+                    Text(showContent ? "Hide" : "Show Content")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Circle().fill(Color.gray))
+                }
+
+                if showContent {
+                    VStack(spacing: 8) {
+                        // Futuristic image placeholder
+                        Image(systemName: "clock.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(.white)
+
+                        // Additional content or greeting
+                        Text(quote)
+                            .font(.system(size: 24, weight: .medium))
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    }
+                    .transition(.opacity)
+                }
+            }
+        }
+        .onAppear {
+            startClock()
+        }
+    }
+
+    // Clock update logic
+    private func startClock() {
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            currentTime = SmartClockView.getCurrentTime()
+        }
+    }
+
+    private static func getCurrentTime() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        return formatter.string(from: Date())
+    }
 }
 ```
+19. Run the app on Android and iOS simulators or devices to see the Smart Clock in action.
 
-### Step 3: Add Core Features
-- **Alarm Logic**: Use platform APIs to handle alarms.
-- **Notifications**: Show alerts using shared Kotlin code.
+### Questions and Answers
 
-### Step 4: Test and Release the App
+### What's next?
+integrate more features like alarms, weather updates, and user settings to make the app more useful.
+integrate AI to provide personalized wake-up suggestions based on user habits and preferences.
+
+### Step 3: What we learned
+- Understand the basics of multiplatform development.
+- Learn how to set up a Kotlin Multiplatform project.
+- Explore how to share code between platforms.
+- Gain experience in using Jetpack Compose for UI development.
+- Learn how to structure a project for multiplatform development.
+- Understand the importance of shared logic and platform-specific implementations.
+- Learn how to use shared libraries and dependencies.
+- Gain insights into the challenges and benefits of multiplatform development.
+- Learn how to handle platform-specific features and APIs.
+- Understand how to manage project dependencies and configurations.
+- Learn how to use version control effectively in a multiplatform project.
+
+### Step 4: Testing and Deployment
 - Test on Android and iOS simulators or devices.
 - Use tools like GitHub Actions to automate testing and deployment.
 
